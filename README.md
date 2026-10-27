@@ -1,53 +1,32 @@
-# MathEx
-
-Lekka, zoptymalizowana i odporna na błędy biblioteka rozszerzeń matematycznych w C# (.NET 10).
-
-Projekt rozwiązuje częste problemy i pułapki algorytmiczne związane z liczbami pierwszymi, NWD (Największym Wspólnym Dzielnikiem) oraz NWW (Najmniejszą Wspólną Wielokrotnością).
-
----
-
-## 🚀 Zaimplementowane funkcjonalności
-
-### 1. Liczby pierwsze (`Prime Numbers`)
-- `MathEx.IsPrime(int n)` oraz `MathEx.IsPrime(long n)`
-  - Algorytm o złożoności $O(\sqrt{n})$ sprawdzający kandydatów w postaci $6k \pm 1$.
-  - **Przypadki brzegowe**:
-    - Liczby $\le 1$ ($0$, $1$ oraz ujemne) zwracają `false`.
-    - $2$ i $3$ zwracają `true`.
-    - Pętla jest chroniona przed przepełnieniem (integer overflow) przy dużych liczbach `long`.
-- `MathEx.GetPrimesUpTo(int limit)`
-  - Wydajne **Sito Eratostenesa** o złożoności $O(n \log \log n)$.
-- `MathEx.GetPrimesInRange(int start, int end)`
-  - Zwraca listę liczb pierwszych w zadanym przedziale obustronnie domkniętym.
-- `MathEx.PrimeFactors(long n)`
-  - Rozkład liczby na czynniki pierwsze (np. dla $360$ zwraca `[2, 2, 2, 3, 3, 5]`).
-
----
-
-### 2. NWD – Największy Wspólny Dzielnik (`GCD`)
-- `MathEx.GCD(int a, int b)` oraz `MathEx.GCD(long a, long b)`
-  - Iteracyjny **algorytm Euklidesa** (brak ryzyka przepełnienia stosu rekurencji).
-  - **Bezpieczeństwo wartości ujemnych**: wynik NWD jest zawsze nieujemny (`GCD(-24, -36) == 12`).
-  - **Obsługa zera**: `GCD(0, 15) == 15`, `GCD(0, 0) == 0`.
-  - **Pułapka `int.MinValue`**: Standardowe `Math.Abs(int.MinValue)` w C# wyrzuca `OverflowException` (ponieważ wartość bezwzględna $-2^{31}$ nie mieści się w standardowym dodatnim `int`). W `MathEx` zostało to bezpiecznie obsłużone.
-- `MathEx.GCD(params int[] numbers)` oraz `MathEx.GCD(params long[] numbers)`
-  - NWD dla dowolnej liczby argumentów, z optymalizacją wczesnego wyjścia (jeśli bieżący NWD osiągnie $1$).
-
----
-
-### 3. NWW – Najmniejsza Wspólna Wielokrotność (`LCM`)
-- `MathEx.LCM(long a, long b)` oraz `MathEx.LCM(params long[] numbers)`
-  - Obliczane według wzoru: $\frac{|a|}{\text{NWD}(a, b)} \cdot |b|$.
-  - Dzielenie przed mnożeniem zapobiega niepotrzebnemu przepełnieniu arytmetycznemu (`overflow`).
-
----
-
-## 🛠️ Uruchomienie przykładów
-
-Wystarczy w katalogu projektu wykonać polecenie:
-
-```bash
+A lightweight, optimized, and fault-tolerant mathematical extension library in C# (.NET 10).
+The project addresses common algorithmic problems and pitfalls related to prime numbers, GCD (Greatest Common Divisor), and LCM (Least Common Multiple).
+🚀 Implemented Features
+1. Prime Numbers
+MathEx.IsPrime(int n) and MathEx.IsPrime(long n)
+An algorithm with \(O(\sqrt{n})\) complexity that checks candidates in the form of \(6k \pm 1\).
+Edge cases:
+Numbers \(\le 1\) (\(0\), \(1\), and negative numbers) return false.
+\(2\) and \(3\) return true.
+The loop is protected against integer overflow for large long numbers.
+MathEx.GetPrimesUpTo(int limit)
+An efficient Sieve of Eratosthenes with \(O(n \log \log n)\) complexity.
+MathEx.GetPrimesInRange(int start, int end)
+Returns a list of prime numbers within a specified, inclusive range.
+MathEx.PrimeFactors(long n)
+Prime factorization (e.g., returns [2, 2, 2, 3, 3, 5] for \(360\)).
+2. GCD – Greatest Common Divisor
+MathEx.GCD(int a, int b) and MathEx.GCD(long a, long b)
+Iterative Euclidean algorithm (no risk of recursion stack overflow).
+Negative value safety: the GCD result is always non-negative (GCD(-24, -36) == 12).
+Zero handling: GCD(0, 15) == 15, GCD(0, 0) == 0.
+The int.MinValue pitfall: Standard Math.Abs(int.MinValue) in C# throws an OverflowException (since the absolute value of \(-2^{31}\) does not fit into a standard positive int). This has been safely handled in MathEx.
+MathEx.GCD(params int[] numbers) and MathEx.GCD(params long[] numbers)
+GCD for an arbitrary number of arguments, featuring an early-exit optimization (if the current GCD reaches \(1\)).
+3. LCM – Least Common Multiple
+MathEx.LCM(long a, long b) and MathEx.LCM(params long[] numbers)
+Calculated using the formula: \(\frac{\vert{}a\vert{}}{\text{GCD}(a, b)} \cdot \vert{}b\vert{}\).
+Division before multiplication prevents unnecessary arithmetic overflow.
+🛠️ Running the Examples
+Simply execute the following command in the project directory:
 dotnet run
-```
-
-Uruchomi ono program z pliku [Example.cs](Example.cs), który przetestuje wszystkie metody oraz zweryfikuje asercje przypadków brzegowych.
+This will run the program from the Example.cs file, which tests all methods and verifies edge-case assertions.
